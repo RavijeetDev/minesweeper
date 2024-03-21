@@ -17,9 +17,7 @@ enum class GameState {
 private val minesPositions = arrayListOf<Point>()
 private val numberPositions = hashMapOf<Point, Int>()
 private val markedPositions = arrayListOf<Point>()
-private val exploreCoordinates = arrayListOf<ArrayList<Int>>()
 
-private var gameFinished = false
 private var gameState = GameState.RUNNING
 
 
@@ -81,14 +79,12 @@ fun hideMines() {
 }
 
 fun hideNumbers() {
-    printMap()
     for (row in map) {
         row.replaceAll {
             if (it in '1'..'8') '.'
             else it
         }
     }
-//    println(numberPositions)
 }
 
 fun playGame() {
@@ -148,7 +144,6 @@ fun exploreCell(row: Int, column: Int) {
 
     } else if (map[row][column] == '.') {
         map[row][column] = '/'
-//        exploreCoordinates.add(arrayListOf(row, column))
         revealNeighbourCells(row, column)
         printMap()
     }
@@ -158,13 +153,6 @@ fun revealNeighbourCells(row: Int, column: Int) {
     for (r in maxOf(row - 1, 0)..minOf(row + 1, 8)) {
         for (c in maxOf(column - 1, 0)..minOf(column + 1, 8)) {
             if (r != row || c != column) {
-//                if (map[r][c] in '1'..'8') {
-//                    map[r][c] = numberPositions.get(Point(c, r))!!.digitToChar()
-//                } else if (map[r][c] == '.') {
-//                    map[r][c] = '/'
-//                    revealNeighbourCells(r, c)
-//                }
-
                 if (numberPositions.containsKey(Point(c, r))) {
                     map[r][c] = numberPositions[Point(c, r)]!!.digitToChar()
                 } else if (map[r][c] == '.' || map[r][c] == '*') {
